@@ -19,4 +19,4 @@ app.listen(port, () => {
     console.log(`Server is Fire at asdf http://localhost:${port}`);
 });
 
-module.exports = app;
+export default app;
