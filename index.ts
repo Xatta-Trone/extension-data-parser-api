@@ -1,5 +1,6 @@
 import express, { Express, Request, Response, Application } from 'express';
 import dotenv from 'dotenv';
+import { defaultRoute as routes } from './routes';
 
 //For env File 
 dotenv.config();
@@ -7,9 +8,9 @@ dotenv.config();
 const app: Application = express();
 const port = process.env.APP_PORT || 8000;
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('Welcome to Express asdf & TypeScript Server');
-});
+
+app.use('/', routes);
+
 
 app.listen(port, () => {
     console.log(`Server is Fire at asdf http://localhost:${port}`);
