@@ -18,3 +18,5 @@ app.use('/', routes);
 app.listen(port, () => {
     console.log(`Server is Fire at asdf http://localhost:${port}`);
 });
+
+module.exports = app;
