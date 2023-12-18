@@ -4,7 +4,7 @@ import mozillaRoutes from './mozilla'
 const defaultRoute = Router();
 
 defaultRoute.get('/', (req: Request, res: Response) => {
-    res.send("What's up doc ?!");
+    res.send("Hello there");
 });
 
 defaultRoute.use('/mozilla', mozillaRoutes);
