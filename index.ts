@@ -8,6 +8,9 @@ dotenv.config();
 const app: Application = express();
 const port = process.env.APP_PORT || 8000;
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 app.use('/', routes);
 

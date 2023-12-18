@@ -4,7 +4,7 @@ import mozillaController from '../controllers/mozillaController';
 const route = Router();
 
 route.get('/', mozillaController.index);
-route.post('/', mozillaController.create);
+route.get('/:addonId', mozillaController.index);
 
 
 
