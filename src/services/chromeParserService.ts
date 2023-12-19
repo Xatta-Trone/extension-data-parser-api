@@ -41,7 +41,7 @@ export const parseChromeData = async (addonId: string): Promise<chromeResponse |
     // console.log(title)
 
     // url 
-    addonData.url = "https://chromewebstore.google.com/detail/" + addonId
+    // addonData.url = "https://chromewebstore.google.com/detail/" + addonId
 
 
     let img = await page.$x('/html/body/c-wiz/div/div/main/div/section[1]/section/div[1]/a/img/@src')
