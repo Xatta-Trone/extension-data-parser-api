@@ -1,0 +1,16 @@
+export interface chromeResponse {
+    title: string,
+    url: string,
+    author: string,
+    imageURL: string,
+    rating: string,
+    users: string,
+    ratingsCount: string,
+    categories: string[],
+    images: string[],
+    description: string,
+    supportEmail: string | null,
+    version: string,
+    size: string,
+    lastUpdated: string,
+}
