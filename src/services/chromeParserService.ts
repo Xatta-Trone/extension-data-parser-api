@@ -7,7 +7,7 @@ const ADDON_BASE_URL = 'https://addons.mozilla.org';
 export const parseChromeData = async (addonId: string): Promise<chromeResponse | ErrorResponse> => {
 
     const browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         defaultViewport: null,
     });
 
@@ -79,7 +79,7 @@ export const parseChromeData = async (addonId: string): Promise<chromeResponse |
             });
         }, ...categoriesEl);
     }
-    addonData.categories = categories ?? '';
+    addonData.categories = categories;
     // console.log(categories)
 
     // images $x('/html/body/c-wiz/div/div/main/div[1]/section[2]/div[2]/child::node()')
@@ -101,7 +101,8 @@ export const parseChromeData = async (addonId: string): Promise<chromeResponse |
     // console.log(images)
 
     // single img /html/body/c-wiz/div/div/main/div/section[2]/div/div/img
-    let featuredImgEl = await page.$x('/html/body/c-wiz/div/div/main/div/section[2]/div/div/img/@src')
+    //            /html/body/c-wiz/div/div/main/div/section[2]/div/div/div/img
+    let featuredImgEl = await page.$x('/html/body/c-wiz/div/div/main/div/section[2]/div/div/descendant::img/@src')
     if (featuredImgEl.length > 0) {
         let featuredImg = await page.evaluate(el => el.textContent, featuredImgEl[0]);
         addonData.images = [featuredImg ?? '']
@@ -123,6 +124,7 @@ export const parseChromeData = async (addonId: string): Promise<chromeResponse |
     // console.log(version)
 
     // author /html/body/c-wiz/div/div/main/div/section[4]/div[2]/div/ul/li[4]/div[2]
+    //       /html/body/c-wiz[2]/div/div/main/div/section[4]/div[2]/div/ul/li[6]/div[2]/div/details/div
     let authorEl = await page.$x('/html/body/c-wiz/div/div/main/div/section[4]/div[2]/div/ul/li[4]/div[2]')
     let author = await page.evaluate(el => el.textContent, authorEl[0]);
     addonData.author = author ?? ''
@@ -138,13 +140,15 @@ export const parseChromeData = async (addonId: string): Promise<chromeResponse |
     let sizeEl = await page.$x('/html/body/c-wiz/div/div/main/div/section[4]/div[2]/div/ul/li[5]/div[2]')
     let size = await page.evaluate(el => el.textContent, sizeEl[0]);
     addonData.size = size ?? ''
-    // console.log(size)
+    console.log(size)
 
     // dev mail /html/body/c-wiz/div/div/main/div/section[4]/div[2]/div/ul/li[7]/div[2]/div/details/div
-    let devEl = await page.$x('/html/body/c-wiz/div/div/main/div/section[4]/div[2]/div/ul/li[7]/div[2]/div/details/div')
-    let dev = await page.evaluate(el => el.textContent, devEl[0]);
-    addonData.supportEmail = dev ?? ''
+    // let devEl = await page.$x('/html/body/c-wiz/div/div/main/div/section[4]/div[2]/div/ul/li[7]/div[2]/div/details/div')
+    // let dev = await page.evaluate(el => el.textContent, devEl[0]);
+    // addonData.supportEmail = dev ?? ''
     // console.log(dev)
+
+    // console.log(addonData)
 
     await browser.close();
 
