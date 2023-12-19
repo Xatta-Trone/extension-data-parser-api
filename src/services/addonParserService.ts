@@ -40,8 +40,14 @@ export const parseAddonData = async (addonId: string): Promise<mozillaResponse |
 
     metadataCards.each((i, elem) => {
         const el = $(elem)
-        const key = el.find('.MetadataCard-title').text().trim().toLowerCase();
+        let key = el.find('.MetadataCard-title').text().trim().toLowerCase();
         const value = el.find('.MetadataCard-content').text().trim().toLowerCase();
+
+        if (key.includes('stars')) {
+            key = 'ratings';
+        }
+
+
         const metaDataItem = { key: key, value: value }
         metaData.push(metaDataItem)
     });
