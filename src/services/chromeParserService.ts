@@ -1,15 +1,24 @@
 import puppeteer from "puppeteer";
 import { chromeResponse } from "src/models/chromeResponse";
 import { ErrorResponse } from "src/models/errorResponse";
+import chromium from 'chrome-aws-lambda';
 
 const ADDON_BASE_URL = 'https://addons.mozilla.org';
 
 export const parseChromeData = async (addonId: string): Promise<chromeResponse | ErrorResponse> => {
 
-    const browser = await puppeteer.launch({
+    // const browser = await puppeteer.launch({
+    //     headless: true,
+    //     defaultViewport: null,
+    // });
+
+    const browser = await chromium.puppeteer.launch({
+        args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath,
         headless: true,
-        defaultViewport: null,
-    });
+        ignoreHTTPSErrors: true,
+    })
 
     // Open a new page
     const page = await browser.newPage();
