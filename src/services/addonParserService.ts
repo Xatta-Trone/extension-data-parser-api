@@ -24,6 +24,8 @@ export const parseAddonData = async (addonId: string): Promise<mozillaResponse |
 
     let addonData = {} as mozillaResponse;
 
+    addonData.url = `${ADDON_BASE_URL}/en-US/firefox/addon/${addonId}`;
+
     const $ = cheerio.load(resBody);
 
     addonData.author = $('.AddonTitle-author').text().trim();
