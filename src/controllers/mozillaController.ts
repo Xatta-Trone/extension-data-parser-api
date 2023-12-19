@@ -19,7 +19,7 @@ class mozillaController {
                 return res.status(200).json(data);
             })
             .catch((err: ErrorResponse) => {
-                return res.status(200).json(err);
+                return res.status(404).json(err);
             })
 
 
