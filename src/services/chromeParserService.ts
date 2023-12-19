@@ -7,7 +7,7 @@ const ADDON_BASE_URL = 'https://addons.mozilla.org';
 export const parseChromeData = async (addonId: string): Promise<chromeResponse | ErrorResponse> => {
 
     const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         defaultViewport: null,
     });
 
