@@ -1,6 +1,7 @@
 import { RequestHandler, Request, Response, NextFunction } from "express";
 import { ErrorResponse } from '../models/errorResponse';
 import { parseChromeData } from "../services/chromeParserService";
+import { parseChromeDataP } from "../services/chromeParserServiceP";
 
 
 
@@ -14,7 +15,7 @@ class chromeController {
             return res.status(400).json({ errorCode: 400, errorMessage: 'Please provide an extension ID. i.e. iiakpffjljhppecmbiklaokmnbacpooa' } as ErrorResponse);
         }
 
-        await parseChromeData(addonId)
+        await parseChromeDataP(addonId)
             .then((data: any) => {
                 // console.log(data)
                 return res.status(200).json(data);
