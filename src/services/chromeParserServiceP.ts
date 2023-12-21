@@ -1,18 +1,26 @@
-import puppeteer from "puppeteer";
+// import puppeteer from "puppeteer";
 import { chromeResponse } from "src/models/chromeResponse";
 import { ErrorResponse } from "src/models/errorResponse";
 // import chromium from 'chrome-aws-lambda';
 import { chromium } from "playwright";
+import edgeChromium from 'chrome-aws-lambda'
+
+// Importing Puppeteer core as default otherwise
+// it won't function correctly with "launch()"
+import puppeteer from 'puppeteer-core'
+const LOCAL_CHROME_EXECUTABLE = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
 const ADDON_BASE_URL = 'https://addons.mozilla.org';
 
 export const parseChromeDataP = async (addonId: string): Promise<chromeResponse | ErrorResponse> => {
 
     try {
-        // const browser = await puppeteer.launch({
-        //     headless: true,
-        //     defaultViewport: null,
-        // });
+        const executablePath = await edgeChromium.executablePath || LOCAL_CHROME_EXECUTABLE
+        const browser = await puppeteer.launch({
+            executablePath,
+            headless: false,
+            defaultViewport: null,
+        });
 
         // const browser = await chromium.puppeteer.launch({
         //     args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
@@ -22,9 +30,9 @@ export const parseChromeDataP = async (addonId: string): Promise<chromeResponse 
         //     ignoreHTTPSErrors: true,
         // })
 
-        const browser = await chromium.launch({ headless: true });
-        const context = await browser.newContext();
-        // Open a new page
+        // const browser = await chromium.launch({ headless: true });
+        // const context = await browser.newContext();
+        // // Open a new page
         const page = await browser.newPage();
 
         // On this new page:
@@ -36,22 +44,34 @@ export const parseChromeDataP = async (addonId: string): Promise<chromeResponse 
         await page.goto(`https://chromewebstore.google.com/detail/${addonId}?hl=en`);
 
         // check title /html/body/c-wiz/div/div/main/div/section[1]/section/div[1]/a/h1
-        let isTitleElVisible = await page.locator('xpath=/html/body/c-wiz/div/div/main/div/section[1]/section/div[1]/a/h1').isVisible({ timeout: 3000 });
+        let titleEl = await page.$x('/html/body/c-wiz/div/div/main/div/section[1]/section/div[1]/a/h1')
 
-        if (isTitleElVisible == false) {
+        if (titleEl.length === 0) {
             // 404 response 
             let e: ErrorResponse = { errorCode: 404, errorMessage: 'Could not fetch date. Please check the extension id.' }
             return Promise.reject(e)
         }
 
-        // get the title 
+        // check title /html/body/c-wiz/div/div/main/div/section[1]/section/div[1]/a/h1
+        // // let isTitleElVisible = await page.locator('xpath=/html/body/c-wiz/div/div/main/div/section[1]/section/div[1]/a/h1').isVisible({ timeout: 3000 });
+
+        // if (isTitleElVisible == false) {
+        //     // 404 response 
+        //     let e: ErrorResponse = { errorCode: 404, errorMessage: 'Could not fetch date. Please check the extension id.' }
+        //     return Promise.reject(e)
+        // }
+
+        // // get the title 
 
 
         let addonData = {} as chromeResponse;
 
-
-        let title = await page.locator('xpath=/html/body/c-wiz/div/div/main/div/section[1]/section/div[1]/a/h1').textContent();
+        let title = await page.evaluate(el => el.textContent, titleEl[0]);
         addonData.title = title ?? '';
+
+
+        // let title = await page.locator('xpath=/html/body/c-wiz/div/div/main/div/section[1]/section/div[1]/a/h1').textContent();
+        // addonData.title = title ?? '';
         // // console.log(title)
 
         // // url 

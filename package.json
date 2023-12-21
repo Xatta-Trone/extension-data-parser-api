@@ -10,6 +10,9 @@
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist"
   },
+  "engines": {
+    "node": "14.x"
+  },
   "pre-commit": [
     "ts.check",
     "build",
@@ -19,13 +22,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sparticuz/chromium-min": "^119.0.2",
     "axios": "^1.6.2",
     "cheerio": "^1.0.0-rc.12",
     "chrome-aws-lambda": "^10.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "playwright": "^1.40.1",
-    "puppeteer": "^21.6.1"
+    "playwright-core": "^1.40.1",
+    "puppeteer": "^21.6.1",
+    "puppeteer-core": "10.1.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
