@@ -17,7 +17,7 @@ export const parseChromeData = async (addonId: string): Promise<chromeResponse |
         const browser = await puppeteer.launch({
             args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
             defaultViewport: chromium.defaultViewport,
-            executablePath: (await chromium.executablePath('./node_modules/@sparticuz/chromium/bin')),
+            executablePath: (await chromium.executablePath('/var/task/node_modules/@sparticuz/chromium/bin')),
             headless: false,
             ignoreHTTPSErrors: true,
         })
