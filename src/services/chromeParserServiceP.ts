@@ -22,7 +22,7 @@ export const parseChromeDataP = async (addonId: string): Promise<chromeResponse 
         //     ignoreHTTPSErrors: true,
         // })
 
-        const browser = await chromium.launch({ headless: false });
+        const browser = await chromium.launch({ headless: true });
         const context = await browser.newContext();
         // Open a new page
         const page = await browser.newPage();
@@ -164,7 +164,7 @@ export const parseChromeDataP = async (addonId: string): Promise<chromeResponse 
 
         // // console.log(addonData)
 
-        // await browser.close();
+        await browser.close();
 
         return Promise.resolve(addonData)
 
